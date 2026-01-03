@@ -21,6 +21,7 @@ export const translations = {
     'cat.greeting': '👋 Greetings',
     'cat.motivation': '💪 Motivation',
     'cat.short': '✨ Short',
+    'cat.quotes': '💬 Quotes',
 
     // Cards
     codon: '🧬 Codon',
@@ -113,6 +114,7 @@ export const translations = {
     'cat.greeting': '👋 问候语',
     'cat.motivation': '💪 励志',
     'cat.short': '✨ 简短词汇',
+    'cat.quotes': '💬 名言台词',
 
     // Cards
     codon: '🧬 密码子',

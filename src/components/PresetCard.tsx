@@ -78,6 +78,18 @@ export default function PresetCard({ text, codon, hintEn, hintZh, colorIndex = 0
   // Determine what shows on front based on displayMode
   const showAnswerFirst = displayMode === 'answer';
 
+  // Dynamic font size based on text length
+  const getAnswerFontSize = () => {
+    const len = text.length;
+    if (len <= 15) return 'text-xl';
+    if (len <= 25) return 'text-lg';
+    if (len <= 40) return 'text-base';
+    return 'text-sm';
+  };
+
+  const answerFontSize = getAnswerFontSize();
+  const needsScroll = text.length > 60;
+
   return (
     <div
       className="cursor-pointer group"
@@ -92,15 +104,11 @@ export default function PresetCard({ text, codon, hintEn, hintZh, colorIndex = 0
       >
         {/* Front Side */}
         <div
-          className={`absolute inset-0 rounded-2xl p-5 flex flex-col justify-between transition-all ${
-            showAnswerFirst
-              ? `bg-gradient-to-br ${cardGradient} shadow-xl shadow-black/20`
-              : 'bg-gradient-to-br from-white via-slate-50 to-slate-100 dark:from-slate-800 dark:via-slate-850 dark:to-slate-900 shadow-lg shadow-slate-300/50 dark:shadow-black/30 border border-slate-200/80 dark:border-slate-700/50'
-          }`}
+          className={`absolute inset-0 rounded-2xl p-5 flex flex-col justify-between transition-all bg-gradient-to-br ${cardGradient} shadow-xl shadow-black/20`}
           style={{ backfaceVisibility: 'hidden' }}
         >
           {showAnswerFirst ? (
-            // Answer on front (colorful)
+            // Answer on front
             <>
               <div className="flex justify-between items-start">
                 <span className="text-white/70 text-xs font-medium uppercase tracking-wider">{t('answer')}</span>
@@ -111,71 +119,67 @@ export default function PresetCard({ text, codon, hintEn, hintZh, colorIndex = 0
                   {copiedAnswer ? t('copied') : t('copy')}
                 </button>
               </div>
-              <div className="text-center flex-1 flex flex-col justify-center">
-                <div className="text-white text-xl font-bold tracking-wide leading-tight drop-shadow-sm">
+              <div className={`text-center flex-1 flex flex-col justify-center ${needsScroll ? 'overflow-y-auto' : ''}`}>
+                <div className={`text-white ${answerFontSize} font-bold tracking-wide leading-tight drop-shadow-sm px-1`}>
                   {text}
                 </div>
                 {hint && (
-                  <div className="text-white/70 text-sm mt-2">{hint}</div>
+                  <div className="text-white/70 text-xs mt-2">{hint}</div>
                 )}
               </div>
               <div className="text-white/50 text-xs text-center">{t('clickToFlip')}</div>
             </>
           ) : (
-            // Codon on front (neutral)
+            // Codon on front
             <>
               <div className="flex justify-between items-start">
-                <span className="text-teal-600 dark:text-teal-400 text-xs font-medium uppercase tracking-wider">{t('codon')}</span>
+                <span className="text-white/70 text-xs font-medium uppercase tracking-wider">{t('codon')}</span>
                 <button
                   onClick={handleCopyCodon}
-                  className="text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 text-xs px-2 py-1 rounded-lg bg-slate-100 dark:bg-slate-700/50 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors"
+                  className="text-white/60 hover:text-white text-xs px-2 py-1 rounded-lg bg-white/10 hover:bg-white/20 transition-colors"
                 >
                   {copiedCodon ? t('copied') : t('copy')}
                 </button>
               </div>
               <div className="flex-1 flex items-center justify-center">
-                <div className="font-mono text-sm text-slate-700 dark:text-slate-300 break-all leading-relaxed text-center">
+                <div className="font-mono text-sm text-white break-all leading-relaxed text-center drop-shadow-sm">
                   {shortCodon}
                 </div>
               </div>
-              <div className="text-slate-400 dark:text-slate-500 text-xs text-center">{t('clickToFlip')}</div>
+              <div className="text-white/50 text-xs text-center">{t('clickToFlip')}</div>
             </>
           )}
         </div>
 
         {/* Back Side */}
         <div
-          className={`absolute inset-0 rounded-2xl p-5 flex flex-col justify-between transition-all ${
-            showAnswerFirst
-              ? 'bg-gradient-to-br from-white via-slate-50 to-slate-100 dark:from-slate-800 dark:via-slate-850 dark:to-slate-900 shadow-lg shadow-slate-300/50 dark:shadow-black/30 border border-slate-200/80 dark:border-slate-700/50'
-              : `bg-gradient-to-br ${cardGradient} shadow-xl shadow-black/20`
-          }`}
+          className={`absolute inset-0 rounded-2xl p-5 flex flex-col justify-between transition-all bg-gradient-to-br ${cardGradient} shadow-xl shadow-black/20`}
           style={{
             backfaceVisibility: 'hidden',
             transform: 'rotateY(180deg)',
           }}
         >
           {showAnswerFirst ? (
-            // Codon on back (neutral)
+            // Codon on back
             <>
               <div className="flex justify-between items-start">
-                <span className="text-teal-600 dark:text-teal-400 text-xs font-medium uppercase tracking-wider">{t('codon')}</span>
+                <span className="text-white/70 text-xs font-medium uppercase tracking-wider">{t('codon')}</span>
                 <button
                   onClick={handleCopyCodon}
-                  className="text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 text-xs px-2 py-1 rounded-lg bg-slate-100 dark:bg-slate-700/50 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors"
+                  className="text-white/60 hover:text-white text-xs px-2 py-1 rounded-lg bg-white/10 hover:bg-white/20 transition-colors"
                 >
                   {copiedCodon ? t('copied') : t('copy')}
                 </button>
               </div>
               <div className="flex-1 flex items-center justify-center">
-                <div className="font-mono text-sm text-slate-700 dark:text-slate-300 break-all leading-relaxed text-center">
+                <div className="font-mono text-sm text-white break-all leading-relaxed text-center drop-shadow-sm">
                   {shortCodon}
                 </div>
               </div>
-              <div className="text-slate-400 dark:text-slate-500 text-xs text-center">{t('clickBack')}</div>
+              <div className="text-white/50 text-xs text-center">{t('clickBack')}</div>
             </>
           ) : (
-            // Answer on back (colorful)
+            // Answer on back
             <>
               <div className="flex justify-between items-start">
                 <span className="text-white/70 text-xs font-medium uppercase tracking-wider">{t('answer')}</span>
@@ -186,12 +190,12 @@ export default function PresetCard({ text, codon, hintEn, hintZh, colorIndex = 0
                   {copiedAnswer ? t('copied') : t('copy')}
                 </button>
               </div>
-              <div className="text-center flex-1 flex flex-col justify-center">
-                <div className="text-white text-xl font-bold tracking-wide leading-tight drop-shadow-sm">
+              <div className={`text-center flex-1 flex flex-col justify-center ${needsScroll ? 'overflow-y-auto' : ''}`}>
+                <div className={`text-white ${answerFontSize} font-bold tracking-wide leading-tight drop-shadow-sm px-1`}>
                   {text}
                 </div>
                 {hint && (
-                  <div className="text-white/70 text-sm mt-2">{hint}</div>
+                  <div className="text-white/70 text-xs mt-2">{hint}</div>
                 )}
               </div>
               <div className="text-white/50 text-xs text-center">{t('clickBack')}</div>
